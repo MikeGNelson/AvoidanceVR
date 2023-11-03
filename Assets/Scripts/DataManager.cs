@@ -391,21 +391,21 @@ public class DataManager : MonoBehaviourPunCallbacks
             case Conditons.Close_Idle:
                 //Set model group
 
-                models = 8;
+                models = 11;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
             case Conditons.Middle_Idle:
                 //Set model group
 
-                models = 9;
+                models = 12;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
             case Conditons.Far_Idle:
                 //Set model group
 
-                models = 10;
+                models = 13;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
