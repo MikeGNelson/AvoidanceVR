@@ -23,6 +23,7 @@ public class DataManager : MonoBehaviourPunCallbacks
 
     public int UId;
     string path;
+    string path1;
 
     public GameController gameController;
 
@@ -604,12 +605,32 @@ public class DataManager : MonoBehaviourPunCallbacks
     {
         string rep = " A";
         path = "Assets/Results/" + (records[0].condition + 1).ToString() + "A.csv";
+        path1 = "Assets/Results/" + (records[0].condition + 1).ToString() + "A_Summary.csv";
         if (System.IO.File.Exists(path))
         {
             path = "Assets/Results/" + (records[0].condition + 1).ToString() + "B.csv";
+            path1 = "Assets/Results/" + (records[0].condition + 1).ToString() + "B_Summary.csv";
             rep = " B";
         }
 
+
+        float sumDistance = 0;
+        float totalTime = 0;
+        float startTime = records[0].time;
+        float averageSpeed = 0;
+        float minimumDistance = 100;
+
+        List<float> passingDistances = new List<float>();
+        float totalPassing = 0;
+        float passingDistance = 100;
+
+        bool isMinDistSide = false;
+        string isMinDistanceFrontOrBack = "";
+        string passingSide = "";
+
+
+        int tIndex = 0;
+        int maxTIndex = records.Count - 1;
 
         StreamWriter writer = new StreamWriter(path, true);
 
@@ -622,9 +643,54 @@ public class DataManager : MonoBehaviourPunCallbacks
         writer.WriteLine("--------------------------------");
         writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
         writer.WriteLine("--------------------------------");
-        writer.WriteLine("Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, Distance_C, X_C, Y_C, Z_C, isCenter_C, isFront_C, isSide_C, isLeft_C");
+        writer.WriteLine("Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft");
         foreach (Record record in records)
         {
+
+            if (tIndex != maxTIndex)
+            {
+                sumDistance += Vector3.Distance(record.position, records[tIndex + 1].position);
+            }
+            else
+            {
+                totalTime = record.time;
+            }
+
+            if (minimumDistance > record.distanceToCharacter)
+            {
+                minimumDistance = record.distanceToCharacter;
+                if (record.isSide)
+                {
+                    isMinDistSide = true;
+                }
+                else
+                {
+                    isMinDistSide = false;
+                    if (record.isFront)
+                    {
+                        isMinDistanceFrontOrBack = "Front";
+                    }
+                    else
+                    {
+                        isMinDistanceFrontOrBack = "Back";
+                    }
+                }
+            }
+
+            if (record.isSide)
+            {
+                passingDistances.Add(record.distanceToCharacter);
+                totalPassing += record.distanceToCharacter;
+                if (record.isLeft)
+                {
+                    passingSide = "Left";
+                }
+                else
+                {
+                    passingSide = "Right";
+                }
+            }
+
             Debug.Log("--------------------------------");
             Debug.Log("Index: " + i);
             Debug.Log("--------------------------------");
@@ -647,16 +713,36 @@ public class DataManager : MonoBehaviourPunCallbacks
             //writer.WriteLine("isSide: " + record.isSide);
             //writer.WriteLine("isLeft: " + record.isLeft);
 
-            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}"
-                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.distanceToCharacter, record.x_c, record.y_c, record.z_c, record.isCenter_C, record.isFront_C, record.isSide_C, record.isLeft_C));
+            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}}"
+                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.distanceToCharacter));
 
 
-
+            tIndex++;
             i++;
         }
         
 
         writer.Close();
+
+        //Summary
+        Debug.Log("write sum");
+
+        StreamWriter sw1 = new StreamWriter(path1);
+        sw1.WriteLine("UserId, Condition, Total Distance, Total Time, Average Speed, Minimum Distance, Passing Distance, Is Minimum Distance Side, Is Minimum Distance Front or Back, Passing Side");
+        sw1.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
+            records[0].condition,
+            sumDistance.ToString(),
+            totalTime.ToString(),
+            averageSpeed.ToString(),
+            minimumDistance.ToString(),
+            passingDistance.ToString(),
+            isMinDistSide,
+            isMinDistanceFrontOrBack,
+            passingSide
+            ));
+
+        sw1.Close();
+
 
         records.Clear();
 
