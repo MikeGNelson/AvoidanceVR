@@ -17,6 +17,8 @@ public class DataManager : MonoBehaviourPunCallbacks
     public float time = 0;
     public TextMeshProUGUI conditionIndicator;
 
+    public float outerDistance = 0;
+
     private string conditionPrompt = "Record this number in your post round survey:";
     
     public int models = 0;
@@ -39,16 +41,18 @@ public class DataManager : MonoBehaviourPunCallbacks
         public bool isCenter;
         public bool isSide;
         public bool isLeft;
+        public bool isOutside;
         public float distanceToCharacter, x_c, y_c, z_c;
         public bool isFront_C;
         public bool isCenter_C;
         public bool isSide_C;
         public bool isLeft_C;
         public Vector3 position;
+        public float outerDistance;
 
         public int condition;
 
-        public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position)
+        public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance)
         {
             condition = _condition;
             time = _time;
@@ -60,6 +64,7 @@ public class DataManager : MonoBehaviourPunCallbacks
             x_c = _c_position.position.x;
             y_c = _c_position.position.y;
             z_c = _c_position.position.z;
+            outerDistance = _outerDistance;
             //isFront_C = false;
             //isCenter_C = false;
             //isSide_C = false;
@@ -145,6 +150,15 @@ public class DataManager : MonoBehaviourPunCallbacks
                 isFront_C = false;
                 isSide_C = true;
                 Debug.Log("Side");
+            }
+
+            if(Mathf.Abs(_position.x) > outerDistance)
+            {
+                isOutside = true;
+            }
+            else
+            { 
+                isOutside = false; 
             }
 
         }
@@ -393,6 +407,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 11;
+                outerDistance = .5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -400,6 +415,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 12;
+                outerDistance = 1;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -407,6 +423,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 13;
+                outerDistance = 3.5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -416,6 +433,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 8;
+                outerDistance = .5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -423,6 +441,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 9;
+                outerDistance = 1;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -430,6 +449,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 10;
+                outerDistance = 3.5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -439,6 +459,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 8;
+                outerDistance = .5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -446,6 +467,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 9;
+                outerDistance = 1;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -453,6 +475,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 10;
+                outerDistance = 3.5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -462,6 +485,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 8;
+                outerDistance = .5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -469,6 +493,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 9;
+                outerDistance = 1;
                 //conditionText = conditionPrompt + " 5";
                 break;
 
@@ -476,6 +501,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 10;
+                outerDistance = 3.5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
   
@@ -627,6 +653,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         bool isMinDistSide = false;
         string isMinDistanceFrontOrBack = "";
         string passingSide = "";
+        string outer = "";
 
 
         int tIndex = 0;
@@ -640,9 +667,9 @@ public class DataManager : MonoBehaviourPunCallbacks
         Debug.Log("--------------------------------");
         Debug.Log("Condition: " + models);
         Debug.Log("--------------------------------");
-        writer.WriteLine("--------------------------------");
-        writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
-        writer.WriteLine("--------------------------------");
+        //writer.WriteLine("--------------------------------");
+        //writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
+        //writer.WriteLine("--------------------------------");
         writer.WriteLine("Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft");
         foreach (Record record in records)
         {
@@ -689,6 +716,15 @@ public class DataManager : MonoBehaviourPunCallbacks
                 {
                     passingSide = "Right";
                 }
+
+                if (record.isOutside)
+                {
+                    outer = "Outside";
+                }
+                else
+                {
+                    outer = "Inside";
+                }
             }
 
             Debug.Log("--------------------------------");
@@ -713,8 +749,8 @@ public class DataManager : MonoBehaviourPunCallbacks
             //writer.WriteLine("isSide: " + record.isSide);
             //writer.WriteLine("isLeft: " + record.isLeft);
 
-            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}}"
-                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.distanceToCharacter));
+            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}"
+                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside, record.distanceToCharacter));
 
 
             tIndex++;
@@ -728,8 +764,8 @@ public class DataManager : MonoBehaviourPunCallbacks
         Debug.Log("write sum");
 
         StreamWriter sw1 = new StreamWriter(path1);
-        sw1.WriteLine("UserId, Condition, Total Distance, Total Time, Average Speed, Minimum Distance, Passing Distance, Is Minimum Distance Side, Is Minimum Distance Front or Back, Passing Side");
-        sw1.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
+        sw1.WriteLine("UserId, Condition, Total Distance, Total Time, Average Speed, Minimum Distance, Passing Distance, Is Minimum Distance Side, Is Minimum Distance Front or Back, Passing Side, Inside or Outside");
+        sw1.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}",
             records[0].condition,
             sumDistance.ToString(),
             totalTime.ToString(),
@@ -738,7 +774,8 @@ public class DataManager : MonoBehaviourPunCallbacks
             passingDistance.ToString(),
             isMinDistSide,
             isMinDistanceFrontOrBack,
-            passingSide
+            passingSide,
+            outer
             ));
 
         sw1.Close();

@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
                                 follow = GC.follower.transform;
                             }
 
-                            DM.records.Add(new DataManager.Record(Time.time, this.transform.position, x, y, z, GC.midPoint, DM.models, follow));
+                            DM.records.Add(new DataManager.Record(Time.time, this.transform.position, x, y, z, GC.midPoint, DM.models, follow, DM.outerDistance));
                             prevTrans = this.transform.position;
                         }
 
