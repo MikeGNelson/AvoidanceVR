@@ -67,10 +67,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Robot Man
       objectReference: {fileID: 0}
-    - target: {fileID: 5866666021909216657, guid: bff508414c3ca7d479c59dd319f194ec,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 389260aa04ea14549aba366b320611c1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bff508414c3ca7d479c59dd319f194ec, type: 3}

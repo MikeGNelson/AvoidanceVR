@@ -123,10 +123,10 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Recording");
+                //Debug.Log("Recording");
                 if(!stopWriting)
                 {
-                    Debug.Log("Write");
+                    //Debug.Log("Write");
                         if (Vector3.Distance(prevTrans, this.transform.position) > .05)
                         {
                             float x = this.transform.position.x;

@@ -29,6 +29,8 @@ public class DataManager : MonoBehaviourPunCallbacks
 
     public GameController gameController;
 
+
+
     
 
 
@@ -54,6 +56,7 @@ public class DataManager : MonoBehaviourPunCallbacks
 
         public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance)
         {
+            
             condition = _condition;
             time = _time;
             position = _position;
@@ -65,12 +68,40 @@ public class DataManager : MonoBehaviourPunCallbacks
             y_c = _c_position.position.y;
             z_c = _c_position.position.z;
             outerDistance = _outerDistance;
+            if(condition == 8 || condition ==11)
+            {
+                outerDistance = 0.5f;
+            }
+            else if (condition == 9 || condition == 12)
+            {
+                outerDistance = 1;
+            }
+            else if (condition == 10 || condition == 13)
+            {
+                outerDistance = 1.85f;
+            }
+
+
+
             //isFront_C = false;
             //isCenter_C = false;
             //isSide_C = false;
             //isLeft_C =false;
             distance = Vector3.Distance(_position,_midpoint.position);
             distanceToCharacter = Vector3.Distance(_position, _c_position.position);
+
+            Debug.Log(outerDistance);
+            Debug.Log("Condition: " + condition);
+            if (Mathf.Abs(_position.x) > outerDistance)
+            {
+                isOutside = true;
+                Debug.Log("is Outside");
+            }
+            else
+            {
+                isOutside = false;
+                Debug.Log("Not Outsuide");
+            }
 
             Vector3 ITP = _midpoint.InverseTransformPoint(_position);
             if(ITP.x < -0.001)
@@ -152,14 +183,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 Debug.Log("Side");
             }
 
-            if(Mathf.Abs(_position.x) > outerDistance)
-            {
-                isOutside = true;
-            }
-            else
-            { 
-                isOutside = false; 
-            }
+            
 
         }
 
@@ -670,7 +694,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         //writer.WriteLine("--------------------------------");
         //writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
         //writer.WriteLine("--------------------------------");
-        writer.WriteLine("Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft");
+        writer.WriteLine("Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter");
         foreach (Record record in records)
         {
 
@@ -683,12 +707,20 @@ public class DataManager : MonoBehaviourPunCallbacks
                 totalTime = record.time;
             }
 
-            if (minimumDistance > record.distanceToCharacter)
+            if (minimumDistance > record.distance)
             {
-                minimumDistance = record.distanceToCharacter;
+                minimumDistance = record.distance;
                 if (record.isSide)
                 {
                     isMinDistSide = true;
+                    if (record.isOutside)
+                    {
+                        outer = "Outside";
+                    }
+                    else
+                    {
+                        outer = "Inside";
+                    }
                 }
                 else
                 {
@@ -701,13 +733,14 @@ public class DataManager : MonoBehaviourPunCallbacks
                     {
                         isMinDistanceFrontOrBack = "Back";
                     }
+
                 }
             }
 
             if (record.isSide)
             {
-                passingDistances.Add(record.distanceToCharacter);
-                totalPassing += record.distanceToCharacter;
+                passingDistances.Add(record.distance);
+                totalPassing += record.distance;
                 if (record.isLeft)
                 {
                     passingSide = "Left";
@@ -737,6 +770,7 @@ public class DataManager : MonoBehaviourPunCallbacks
             Debug.Log("isFront: " + record.isFront);
             Debug.Log("isSide: " + record.isSide);
             Debug.Log("isLeft: " + record.isLeft);
+            Debug.Log("isOutside: " + record.isOutside);
 
             //writer.WriteLine("--------------------------------");
             //writer.WriteLine("Index: " + i);
@@ -749,8 +783,8 @@ public class DataManager : MonoBehaviourPunCallbacks
             //writer.WriteLine("isSide: " + record.isSide);
             //writer.WriteLine("isLeft: " + record.isLeft);
 
-            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}"
-                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside, record.distanceToCharacter));
+            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}"
+                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside));
 
 
             tIndex++;
@@ -763,9 +797,18 @@ public class DataManager : MonoBehaviourPunCallbacks
         //Summary
         Debug.Log("write sum");
 
+        passingDistance = totalPassing / (passingDistances.Count-1);
+        averageSpeed = sumDistance / totalTime;
+        if(isMinDistSide)
+        {
+            isMinDistanceFrontOrBack = "";
+        }
+
+        totalTime -= startTime;
+
         StreamWriter sw1 = new StreamWriter(path1);
-        sw1.WriteLine("UserId, Condition, Total Distance, Total Time, Average Speed, Minimum Distance, Passing Distance, Is Minimum Distance Side, Is Minimum Distance Front or Back, Passing Side, Inside or Outside");
-        sw1.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}",
+        sw1.WriteLine("Condition, Total Distance, Total Time, Average Speed, Minimum Distance, Passing Distance, Is Minimum Distance Side, Is Minimum Distance Front or Back, Passing Side, Inside or Outside");
+        sw1.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}",
             records[0].condition,
             sumDistance.ToString(),
             totalTime.ToString(),
