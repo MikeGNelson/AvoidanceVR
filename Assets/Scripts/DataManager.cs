@@ -216,7 +216,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         Cylinder_Large_Follow_Fast,
 
 
-        Close_Idle, //5
+        Close_Idle, //17
         Middle_Idle,
         Far_Idle,
 
@@ -231,6 +231,10 @@ public class DataManager : MonoBehaviourPunCallbacks
         Close_Major, //14
         Middle_Major,
         Far_Major,
+
+        Sneeze_None,
+        Sneeze_Away,
+        Sneeze_Towards
 
 
 
@@ -528,7 +532,34 @@ public class DataManager : MonoBehaviourPunCallbacks
                 outerDistance = 3.5f;
                 //conditionText = conditionPrompt + " 5";
                 break;
-  
+
+            #endregion
+
+            #region sneeze
+            case Conditons.Sneeze_None:
+                //Set model group
+
+                models = 14;
+                
+                //conditionText = conditionPrompt + " 5";
+                break;
+
+            case Conditons.Sneeze_Away:
+                //Set model group
+
+                models = 15;
+
+                //conditionText = conditionPrompt + " 5";
+                break;
+
+            case Conditons.Sneeze_Towards:
+                //Set model group
+
+                models = 16;
+
+                //conditionText = conditionPrompt + " 5";
+                break;
+
                 #endregion
 
         }
