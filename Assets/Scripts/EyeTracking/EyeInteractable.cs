@@ -20,6 +20,8 @@ public class EyeInteractable : MonoBehaviour
 
     private MeshRenderer meshRenderer;
 
+    public string type = "room";
+
     // Start is called before the first frame update
     void Start() => meshRenderer = GetComponent<MeshRenderer>();
 
@@ -36,4 +38,6 @@ public class EyeInteractable : MonoBehaviour
             meshRenderer.material = OnHoverInactiveMaterial;
         }
     }
+
+    
 }
