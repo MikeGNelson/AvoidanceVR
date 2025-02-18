@@ -67,7 +67,7 @@ public class HeadRotation : MonoBehaviour
 
     void TriggerAnimation(bool isInRange)
     {
-        if (isInRange)
+        if (isInRange && !hasTriggeredAnimation)
         {
             // Trigger the "Sneeze" animation
             animator.SetTrigger("Sneeze");
@@ -82,11 +82,11 @@ public class HeadRotation : MonoBehaviour
             // Start the coroutine to spawn the particle system after the head has moved
             StartCoroutine(SpawnParticleSystemAfterHeadMovement());
         }
-        else
-        {
-            // Optionally stop the animation or reset logic here
-            hasTriggeredAnimation = false; // Reset the flag if out of range
-        }
+        //else
+        //{
+        //    // Optionally stop the animation or reset logic here
+        //    hasTriggeredAnimation = false; // Reset the flag if out of range
+        //}
     }
 
     // Coroutine to spawn the particle system after the head has moved

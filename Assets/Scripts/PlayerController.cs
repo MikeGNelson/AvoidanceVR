@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
                 if(!stopWriting)
                 {
                     //Debug.Log("Write");
-                        if (Vector3.Distance(prevTrans, this.transform.position) > .05)
+                        //if (Vector3.Distance(prevTrans, this.transform.position) > .05)
                         {
                             float x = this.transform.position.x;
                             float y = this.transform.position.y;

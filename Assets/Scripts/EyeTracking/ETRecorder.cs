@@ -173,6 +173,6 @@ public class DataPoint
 
     public string JoinValues()
     {
-        return timestamp + "," + currentGazeObject + "," + string.Join(",", eyeData);
+        return   currentGazeObject + "," + string.Join(",", eyeData);
     }
 }

@@ -20,6 +20,8 @@ public class DataManager : MonoBehaviourPunCallbacks
     public float outerDistance = 0;
 
     private string conditionPrompt = "Record this number in your post round survey:";
+
+    public string conditionText = "Default";
     
     public int models = 0;
 
@@ -54,12 +56,13 @@ public class DataManager : MonoBehaviourPunCallbacks
 
         public int condition;
 
-        public float[] eyeData;
-        public string currentGazeObject;
+        //public float[] eyeData;
+        //public string currentGazeObject;
+        public DataPoint eyeData;
 
         public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance, DataPoint _eyeData)
         {
-            
+            Debug.Log("Add Data: " +  _time);
             condition = _condition;
             time = _time;
             position = _position;
@@ -85,8 +88,10 @@ public class DataManager : MonoBehaviourPunCallbacks
                 outerDistance = 1.85f;
             }
 
-            eyeData = _eyeData.eyeData;
-            currentGazeObject = _eyeData.currentGazeObject;
+            //eyeData = _eyeData.eyeData;
+            //currentGazeObject = _eyeData.currentGazeObject;
+
+            eyeData = _eyeData;
 
 
             //isFront_C = false;
@@ -432,7 +437,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 break;
             #endregion
 
-        /// Study Proxemics
+        /// Study Sneeze
         /// 
         #region proxemics
 
@@ -546,13 +551,14 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 14;
-                
+                conditionText = "Sneeze_None";
+
                 //conditionText = conditionPrompt + " 5";
                 break;
 
             case Conditons.Sneeze_Away:
                 //Set model group
-
+                conditionText = "Sneeze_Away";
                 models = 15;
 
                 //conditionText = conditionPrompt + " 5";
@@ -562,6 +568,7 @@ public class DataManager : MonoBehaviourPunCallbacks
                 //Set model group
 
                 models = 16;
+                conditionText = "Sneeze_Towards";
 
                 //conditionText = conditionPrompt + " 5";
                 break;
@@ -576,113 +583,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         gameController.GetConditions(models, width, speed);
     }
 
-    [PunRPC]
-    void UpdatePromptText(string text, int mode)
-    {
-        Debug.Log(text);
-        gameController.isRecording = true;
-        models = mode;
-        //path = "Assets/Results/" + DateTime.Now.ToFileTime() + ".txt";
-        conditionIndicator.text = text;
-    }
-
-
-    //public void AddAnswers(List<int> a)
-    //{
-    //    if (a != null)
-    //    {
-    //        if (a.Count > 0)
-    //        {
-    //            answers.AddRange(a);
-    //        }
-    //    }
-            
-    //}
-
-    
-    /// <summary>
-    /// Add speeds
-    /// </summary>
-    /// <param name="s"></param>
-    public void AddSpeeds(List<double> s)
-    {
-        if(s !=null)
-        {
-            Debug.Log("Not Null");
-            if (s.Count > 0)
-            {
-                Debug.Log("Not zero");
-                speeds.AddRange(s);
-            }
-            
-        }
-            
-    }
-
-    /// <summary>
-    /// Add the times
-    /// </summary>
-    /// <param name="t"></param>
-    public void AddTimes (List<float> t)
-    {
-        
-        if (t != null)
-        {
-            if(t.Count > 0)
-            {
-                times.AddRange(t);
-
-            }
-        }
-            
-    }
-
-    /// <summary>
-    /// Add the average interpersonal distances
-    /// </summary>
-    /// <param name="d"></param>
-    public void AddInterPersonalDistance(List<float> d)
-    {
-
-        if (d != null)
-        {
-            if (d.Count > 0)
-            {
-                interPersonalDistance.AddRange(d);
-
-            }
-        }
-
-    }
-
-    /// <summary>
-    /// Add Positions
-    /// </summary>
-    /// <param name="p"></param>
-    public void AddPositions(List<Vector3> p)
-    {
-
-        if (p != null)
-        {
-            if (p.Count > 0)
-            {
-                positions.AddRange(p);
-
-            }
-        }
-
-    }
-
-    /// <summary>
-    /// Add Time
-    /// </summary>
-    /// <param name="t"></param>
-    public void AddTime(float t)
-    {
-
-        time = t;
-
-    }
+   
 
 
     /// <summary>
@@ -700,9 +601,27 @@ public class DataManager : MonoBehaviourPunCallbacks
         //    rep = " B";
         //}
 
-        path  = Application.dataPath + "/" + records[0].condition.ToString() + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
-        path1  = Application.dataPath + "/" + records[0].condition.ToString() + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+        switch (records[0].condition)
+        {
+            case 14:
+                conditionText = "Sneeze_None";
+                break;
+            case 15:
+                conditionText = "Sneeze_Away";
+                break;
+            case 16:
+                conditionText = "Sneeze_Towards";
+                break;
 
+        }
+        Debug.Log("Write Data");
+        #if UNITY_EDITOR
+            path  = Application.dataPath + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+            path1  = Application.dataPath + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+#else
+            path  = Application.persistentDataPath  + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+            path1  = Application.persistentDataPath  + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+#endif
 
         float sumDistance = 0;
         float totalTime = 0;
@@ -719,6 +638,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         string passingSide = "";
         string outer = "";
 
+        
 
         int tIndex = 0;
         int maxTIndex = records.Count - 1;
@@ -734,7 +654,12 @@ public class DataManager : MonoBehaviourPunCallbacks
         //writer.WriteLine("--------------------------------");
         //writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
         //writer.WriteLine("--------------------------------");
-        writer.WriteLine("Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter");
+        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Y,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,blinks");
+
+
+        // Write everything from the array.
+
+       
         foreach (Record record in records)
         {
 
@@ -823,9 +748,11 @@ public class DataManager : MonoBehaviourPunCallbacks
             //writer.WriteLine("isSide: " + record.isSide);
             //writer.WriteLine("isLeft: " + record.isLeft);
 
-            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}"
-                , i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside));
+            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11},{12}"
+                , conditionText, i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside, record.eyeData.JoinValues()));
 
+            
+            
 
             tIndex++;
             i++;
@@ -849,7 +776,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         StreamWriter sw1 = new StreamWriter(path1);
         sw1.WriteLine("Condition, Total Distance, Total Time, Average Speed, Minimum Distance, Passing Distance, Is Minimum Distance Side, Is Minimum Distance Front or Back, Passing Side, Inside or Outside");
         sw1.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}",
-            records[0].condition,
+            conditionText,
             sumDistance.ToString(),
             totalTime.ToString(),
             averageSpeed.ToString(),
@@ -865,6 +792,115 @@ public class DataManager : MonoBehaviourPunCallbacks
 
 
         records.Clear();
+
+    }
+
+
+    [PunRPC]
+    void UpdatePromptText(string text, int mode)
+    {
+        Debug.Log(text);
+        gameController.isRecording = true;
+        models = mode;
+        //path = "Assets/Results/" + DateTime.Now.ToFileTime() + ".txt";
+        conditionIndicator.text = text;
+    }
+
+
+    //public void AddAnswers(List<int> a)
+    //{
+    //    if (a != null)
+    //    {
+    //        if (a.Count > 0)
+    //        {
+    //            answers.AddRange(a);
+    //        }
+    //    }
+
+    //}
+
+
+    /// <summary>
+    /// Add speeds
+    /// </summary>
+    /// <param name="s"></param>
+    public void AddSpeeds(List<double> s)
+    {
+        if (s != null)
+        {
+            Debug.Log("Not Null");
+            if (s.Count > 0)
+            {
+                Debug.Log("Not zero");
+                speeds.AddRange(s);
+            }
+
+        }
+
+    }
+
+    /// <summary>
+    /// Add the times
+    /// </summary>
+    /// <param name="t"></param>
+    public void AddTimes(List<float> t)
+    {
+
+        if (t != null)
+        {
+            if (t.Count > 0)
+            {
+                times.AddRange(t);
+
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Add the average interpersonal distances
+    /// </summary>
+    /// <param name="d"></param>
+    public void AddInterPersonalDistance(List<float> d)
+    {
+
+        if (d != null)
+        {
+            if (d.Count > 0)
+            {
+                interPersonalDistance.AddRange(d);
+
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Add Positions
+    /// </summary>
+    /// <param name="p"></param>
+    public void AddPositions(List<Vector3> p)
+    {
+
+        if (p != null)
+        {
+            if (p.Count > 0)
+            {
+                positions.AddRange(p);
+
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Add Time
+    /// </summary>
+    /// <param name="t"></param>
+    public void AddTime(float t)
+    {
+
+        time = t;
 
     }
 }
