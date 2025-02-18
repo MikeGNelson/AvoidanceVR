@@ -6,25 +6,25 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes 1/EyeTest.unity
+    path: Assets/Scenes/EyeTest.unity
     guid: 658c61b0ce1d53847978b4d332f7e522
   - enabled: 1
-    path: Assets/Scenes 1/Lobby Quest.unity
+    path: Assets/Scenes/Lobby Quest.unity
     guid: b74d0c1b0720e3b40acbf7e5f93608d2
   - enabled: 1
-    path: Assets/Scenes 1/Lobby.unity
+    path: Assets/Scenes/Lobby.unity
     guid: b802652c05b3eff4bacd61d0d236536a
   - enabled: 1
-    path: Assets/Scenes 1/MainScene.unity
+    path: Assets/Scenes/MainScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
   - enabled: 0
-    path: Assets/Scenes 1/Old/Scenes/Lobby Quest.unity
+    path: Assets/Scenes/Old/Scenes/Lobby Quest.unity
     guid: 18c1cae88ed11cb418978111de941ed0
   - enabled: 0
-    path: Assets/Scenes 1/Old/Scenes/Lobby.unity
+    path: Assets/Scenes/Old/Scenes/Lobby.unity
     guid: cb2d8875d5e141d478263881543ea9d7
   - enabled: 0
-    path: Assets/Scenes 1/Old/Scenes/MainScene.unity
+    path: Assets/Scenes/Old/Scenes/MainScene.unity
     guid: 4df4fa384c2bf4b489fbd1aee742f1f1
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 89ec7db42bfff6e4b94472ff138257ab,

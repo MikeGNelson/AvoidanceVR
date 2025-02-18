@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2e2d05f452f9f0d4b9f341d605aa11e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -131,7 +131,8 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 0
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -152,7 +153,7 @@ GameObject:
   - component: {fileID: 8923147978148046043}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -200,7 +201,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2e2d05f452f9f0d4b9f341d605aa11e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -268,6 +269,7 @@ MonoBehaviour:
   Manager: {fileID: 0}
   DM: {fileID: 0}
   GM: {fileID: 0}
+  ET: {fileID: 0}
   GC: {fileID: 0}
   message: {fileID: 0}
   startTime: 0
@@ -315,7 +317,7 @@ GameObject:
   - component: {fileID: 2367517622106018499}
   m_Layer: 0
   m_Name: VR Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -377,6 +379,7 @@ MonoBehaviour:
   head: {fileID: 2987298865357623163}
   left: {fileID: 206887374150538334}
   right: {fileID: 3097921698674153225}
+  ovrCameraRig: {fileID: 0}
 --- !u!1 &6043513340631997227
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,7 +444,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2e2d05f452f9f0d4b9f341d605aa11e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -508,7 +511,8 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 0
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

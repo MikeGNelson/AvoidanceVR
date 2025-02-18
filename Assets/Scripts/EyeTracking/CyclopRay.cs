@@ -34,9 +34,14 @@ public class CyclopRay : MonoBehaviour
         lineRenderer.endWidth = rayWidth;
         lineRenderer.startColor = rayColorDefaultState;
         lineRenderer.endColor = rayColorDefaultState;
-        lineRenderer.SetPosition(0, transform.position);
-        lineRenderer.SetPosition(1, new Vector3(transform.position.x, transform.position.y, transform.position.z + rayDistance));
+
+        // Set the starting point to the average position of the eyes
+        lineRenderer.SetPosition(0, GetAveragePosition());
+
+        // Set the ray to extend in front of the average position of the eyes
+        lineRenderer.SetPosition(1, GetAveragePosition() + transform.TransformDirection(Vector3.forward) * rayDistance);
     }
+
 
     // Update is called once per frame
     void Update()
@@ -49,9 +54,10 @@ public class CyclopRay : MonoBehaviour
     {
         RaycastHit hit;
 
+        // Use the average position of the eyes to cast the ray
         Vector3 rayCastDirection = transform.TransformDirection(Vector3.forward) * rayDistance;
 
-        if (Physics.Raycast(transform.position, rayCastDirection, out hit, Mathf.Infinity))
+        if (Physics.Raycast(GetAveragePosition(), rayCastDirection, out hit, Mathf.Infinity))
         {
             currentGazePoint = hit.point;
 
@@ -60,7 +66,12 @@ public class CyclopRay : MonoBehaviour
                 currentGazeGameObject = hit.transform.gameObject.name;
             }
         }
+
+        // Update the ray in the line renderer to reflect the gaze point
+        lineRenderer.SetPosition(0, GetAveragePosition());
+        lineRenderer.SetPosition(1, currentGazePoint);
     }
+
 
     public Vector3 GetAveragePosition()
     {

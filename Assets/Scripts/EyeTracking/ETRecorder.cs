@@ -20,7 +20,7 @@ public class ETRecorder : MonoBehaviour
     void Start()
     {
         reportedEyeRecords = new List<DataPoint>();
-        InvokeRepeating("LogEyeData", 2.0f, (1 / dataRate));
+        //InvokeRepeating("LogEyeData", 2.0f, (1 / dataRate));
     }
 
     private void LogEyeData()
@@ -63,6 +63,48 @@ public class ETRecorder : MonoBehaviour
         };
 
         reportedEyeRecords.Add(new DataPoint(DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString(), eyeTrackingWorld.GetCurrentGazeGameObject(), eyeData));
+    }
+
+    public DataPoint GetEyeData()
+    {
+        Vector3 gazePoint = eyeTrackingWorld.GetCurrentGazePoint();
+        Vector3 gazeRayDirection = eyeTrackingWorld.Direction();
+        Vector3 RgazeRayDirection = RightEyeTracking.Direction();
+        Vector3 LgazeRayDirection = LeftEyeTracking.Direction();
+
+        float[] eyeData =
+        {
+           gazePoint.x,
+           gazePoint.y,
+           gazePoint.z,
+           eyeTrackingWorld.transform.position.x,
+           eyeTrackingWorld.transform.position.y,
+           eyeTrackingWorld.transform.position.z,
+           gazeRayDirection.x,
+           gazeRayDirection.y,
+           gazeRayDirection.z,
+           RightEyeTracking.transform.position.x,
+           RightEyeTracking.transform.position.y,
+           RightEyeTracking.transform.position.z,
+           RgazeRayDirection.x,
+           RgazeRayDirection.y,
+           RgazeRayDirection.z,
+           LeftEyeTracking.transform.position.x,
+           LeftEyeTracking.transform.position.y,
+           LeftEyeTracking.transform.position.z,
+           LgazeRayDirection.x,
+           LgazeRayDirection.y,
+           LgazeRayDirection.z,
+           playerHead.position.x,
+           playerHead.position.y,
+           playerHead.position.z,
+           playerHead.eulerAngles.x,
+           playerHead.eulerAngles.y,
+           playerHead.eulerAngles.z,
+           isBlinking? 1 : 0
+        };
+
+        return new DataPoint(DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString(), eyeTrackingWorld.GetCurrentGazeGameObject(), eyeData);
     }
 
     public void GenerateReport()
@@ -116,11 +158,11 @@ public class ETRecorder : MonoBehaviour
 
 }
 
-class DataPoint
+public class DataPoint
 {
-    string timestamp;
-    string currentGazeObject;
-    float[] eyeData;
+    public string timestamp;
+    public string currentGazeObject;
+    public float[] eyeData;
 
     public DataPoint(string timestamp, string currentGazeObject, float[] eyeData)
     {

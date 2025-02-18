@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public DataManager DM;
     public GameManager GM;
+    public ETRecorder ET;
 
     public GameController GC;
     //private GameManager EM;
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
         //rb = GetComponent<Rigidbody>();
         DM = GameObject.FindObjectOfType<DataManager>();
         GC = GameObject.FindObjectOfType<GameController>();
+        ET = GameObject.FindObjectOfType<ETRecorder>();
         //EM = Manager.GetComponent<EventManager>();
         //Fetch the Rigidbody component you attach from your GameObject
         //m_Rigidbody = GetComponent<Rigidbody>();
@@ -138,7 +140,7 @@ public class PlayerController : MonoBehaviour
                                 follow = GC.follower.transform;
                             }
 
-                            DM.records.Add(new DataManager.Record(Time.time, this.transform.position, x, y, z, GC.midPoint, DM.models, follow, DM.outerDistance));
+                            DM.records.Add(new DataManager.Record(Time.time, this.transform.position, x, y, z, GC.midPoint, DM.models, follow, DM.outerDistance, ET.GetEyeData()));
                             prevTrans = this.transform.position;
                         }
 

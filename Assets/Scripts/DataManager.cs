@@ -54,7 +54,10 @@ public class DataManager : MonoBehaviourPunCallbacks
 
         public int condition;
 
-        public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance)
+        public float[] eyeData;
+        public string currentGazeObject;
+
+        public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance, DataPoint _eyeData)
         {
             
             condition = _condition;
@@ -64,6 +67,7 @@ public class DataManager : MonoBehaviourPunCallbacks
             y = _y;
             z = _z;
             distanceToCharacter = 0f;
+            
             x_c = _c_position.position.x;
             y_c = _c_position.position.y;
             z_c = _c_position.position.z;
@@ -81,6 +85,8 @@ public class DataManager : MonoBehaviourPunCallbacks
                 outerDistance = 1.85f;
             }
 
+            eyeData = _eyeData.eyeData;
+            currentGazeObject = _eyeData.currentGazeObject;
 
 
             //isFront_C = false;
@@ -684,15 +690,18 @@ public class DataManager : MonoBehaviourPunCallbacks
     /// </summary>
     public void WriteData()
     {
-        string rep = " A";
-        path = "Assets/Results/" + (records[0].condition + 1).ToString() + "A.csv";
-        path1 = "Assets/Results/" + (records[0].condition + 1).ToString() + "A_Summary.csv";
-        if (System.IO.File.Exists(path))
-        {
-            path = "Assets/Results/" + (records[0].condition + 1).ToString() + "B.csv";
-            path1 = "Assets/Results/" + (records[0].condition + 1).ToString() + "B_Summary.csv";
-            rep = " B";
-        }
+        //string rep = " A";
+        //path = "Assets/Results/" + (records[0].condition + 1).ToString() + "A.csv";
+        //path1 = "Assets/Results/" + (records[0].condition + 1).ToString() + "A_Summary.csv";
+        //if (System.IO.File.Exists(path))
+        //{
+        //    path = "Assets/Results/" + (records[0].condition + 1).ToString() + "B.csv";
+        //    path1 = "Assets/Results/" + (records[0].condition + 1).ToString() + "B_Summary.csv";
+        //    rep = " B";
+        //}
+
+        path  = Application.dataPath + "/" + records[0].condition.ToString() + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+        path1  = Application.dataPath + "/" + records[0].condition.ToString() + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
 
 
         float sumDistance = 0;
