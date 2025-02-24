@@ -2513,9 +2513,9 @@ MonoBehaviour:
   onEyeClose:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 346455804}
-        m_TargetAssemblyTypeName: ETRecorder, Assembly-CSharp
-        m_MethodName: SetBlink
+      - m_Target: {fileID: 506263582}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2523,7 +2523,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
   onEyeOpen:
     m_PersistentCalls:
@@ -3331,6 +3331,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &506263582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7345253677164430951, guid: 02f1db33a6665c6439fa953076cec192,
+    type: 3}
+  m_PrefabInstance: {fileID: 1966272010488753812}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &609748312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21082,6 +21088,16 @@ PrefabInstance:
       propertyPath: type
       value: door
       objectReference: {fileID: 0}
+    - target: {fileID: 3065932598602420242, guid: 02f1db33a6665c6439fa953076cec192,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103099939066257858, guid: 02f1db33a6665c6439fa953076cec192,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f8dc9abeebed6c4d9bf9c1b4d3e835c, type: 2}
     - target: {fileID: 7345253677164430951, guid: 02f1db33a6665c6439fa953076cec192,
         type: 3}
       propertyPath: m_Name
@@ -26771,7 +26787,7 @@ MonoBehaviour:
   useRecommendedMSAALevel: 1
   _monoscopic: 0
   _sharpenType: 0
-  _enableDynamicResolution: 0
+  _enableDynamicResolution: 1
   minDynamicResolutionScale: 1
   maxDynamicResolutionScale: 1
   quest2MinDynamicResolutionScale: 1
@@ -26818,9 +26834,9 @@ MonoBehaviour:
   launchSimultaneousHandsControllersOnStartup: 0
   isInsightPassthroughEnabled: 0
   shouldBoundaryVisibilityBeSuppressed: 0
-  requestBodyTrackingPermissionOnStartup: 1
-  requestFaceTrackingPermissionOnStartup: 0
-  requestEyeTrackingPermissionOnStartup: 0
+  requestBodyTrackingPermissionOnStartup: 0
+  requestFaceTrackingPermissionOnStartup: 1
+  requestEyeTrackingPermissionOnStartup: 1
   requestScenePermissionOnStartup: 0
   requestRecordAudioPermissionOnStartup: 0
   _localDimming: 1
