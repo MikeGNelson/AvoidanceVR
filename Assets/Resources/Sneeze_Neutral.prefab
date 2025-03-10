@@ -574,7 +574,7 @@ MonoBehaviour:
   detectionRange: 2.5
   animator: {fileID: 0}
   sneezeSound: {fileID: 0}
-  sneezeParticlesPrefab: {fileID: 6554693829981700010, guid: 23d356553250ac446818537d41650a11,
+  sneezeParticlesPrefab: {fileID: 3823941323220645123, guid: 78a492bfb25180d48a6db7aa90820d67,
     type: 3}
   particleDelay: 0.5
 --- !u!114 &5404112722848428035
