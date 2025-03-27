@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/EyeTest.unity
     guid: 658c61b0ce1d53847978b4d332f7e522
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lobby Quest.unity
     guid: b74d0c1b0720e3b40acbf7e5f93608d2
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: b802652c05b3eff4bacd61d0d236536a
   - enabled: 1

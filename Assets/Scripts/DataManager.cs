@@ -619,11 +619,11 @@ public class DataManager : MonoBehaviourPunCallbacks
         }
         Debug.Log("Write Data");
         #if UNITY_EDITOR
-            path  = Application.dataPath + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
-            path1  = Application.dataPath + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+            path  = Application.dataPath  + "/" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+            path1  = Application.dataPath + "/" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
 #else
-            path  = Application.persistentDataPath  + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
-            path1  = Application.persistentDataPath  + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+            path  = Application.persistentDataPath  + "/" +((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/"  + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+            path1  = Application.persistentDataPath  + "/" +((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/"  + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
 #endif
 
         float sumDistance = 0;
