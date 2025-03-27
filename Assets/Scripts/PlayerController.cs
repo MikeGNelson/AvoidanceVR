@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
     public List<float> averageDistances = null;
     public float time = 0;
 
+    public bool eventTriggered = false;
+
     // public GameObject TimeCol;
     // public GameObject TimeCol1;
     // public string prevTimeCol; 
@@ -140,7 +142,7 @@ public class PlayerController : MonoBehaviour
                                 follow = GC.follower.transform;
                             }
 
-                            DM.records.Add(new DataManager.Record(Time.time, this.transform.position, x, y, z, GC.midPoint, DM.models, follow, DM.outerDistance, ET.GetEyeData()));
+                            DM.records.Add(new DataManager.Record(Time.time, this.transform.position, x, y, z, GC.midPoint, DM.models, follow, DM.outerDistance, ET.GetEyeData(), eventTriggered));
                             prevTrans = this.transform.position;
                         }
 

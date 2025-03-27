@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Avoidance;
 
 [RequireComponent(typeof(Animator))] // Ensures the Animator component is attached to the GameObject
 public class HeadRotation : MonoBehaviour
@@ -23,6 +24,7 @@ public class HeadRotation : MonoBehaviour
     public float particleDelay = 0.5f;
 
     private Quaternion targetRotation; // Store target rotation for the head
+    public PlayerController  playerController;
 
     void Start()
     {
@@ -33,6 +35,8 @@ public class HeadRotation : MonoBehaviour
         sneezeSound = this.GetComponent<AudioSource>();
         // Find the player dynamically once it spawns
         player = GameObject.FindWithTag("Player").transform;
+        playerController = GameObject.FindAnyObjectByType<PlayerController>();
+        playerController.eventTriggered = false;
     }
 
     void Update()
@@ -43,6 +47,7 @@ public class HeadRotation : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(head.position, player.position);
             if (distanceToPlayer <= detectionRange && !hasTriggeredAnimation)
             {
+                playerController.eventTriggered = true;
                 TriggerAnimation(true); // Trigger the "Sneeze" animation when within range
             }
             else if (distanceToPlayer > detectionRange && hasTriggeredAnimation)

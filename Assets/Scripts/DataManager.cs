@@ -53,6 +53,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         public bool isLeft_C;
         public Vector3 position;
         public float outerDistance;
+        public bool eventTriggered;
 
         public int condition;
 
@@ -60,7 +61,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         //public string currentGazeObject;
         public DataPoint eyeData;
 
-        public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance, DataPoint _eyeData)
+        public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance, DataPoint _eyeData, bool _eventTriggered)
         {
             Debug.Log("Add Data: " +  _time);
             condition = _condition;
@@ -70,6 +71,8 @@ public class DataManager : MonoBehaviourPunCallbacks
             y = _y;
             z = _z;
             distanceToCharacter = 0f;
+
+            eventTriggered = _eventTriggered;
             
             x_c = _c_position.position.x;
             y_c = _c_position.position.y;
