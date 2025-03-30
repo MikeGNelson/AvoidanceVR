@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - StartPosition
   - EndPosition
+  - sneeze_particles
   layers:
   - Default
   - TransparentFX

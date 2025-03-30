@@ -40,10 +40,23 @@ public class HeadRotation : MonoBehaviour
         playerController = GameObject.FindAnyObjectByType<PlayerController>();
         playerController.eventTriggered = false;
 
-        if (sneezeParticlesPrefab != null)
+        //if (sneezeParticlesPrefab != null)
+        //{
+        //    pooledSneezeParticles = Instantiate(sneezeParticlesPrefab);
+        //    pooledSneezeParticles.gameObject.SetActive(false);
+        //}
+
+        GameObject sneezeObj = GameObject.FindWithTag("sneeze_particles");
+        if (sneezeObj != null)
         {
-            pooledSneezeParticles = Instantiate(sneezeParticlesPrefab);
-            pooledSneezeParticles.gameObject.SetActive(false);
+            pooledSneezeParticles = sneezeObj.GetComponent<ParticleSystem>();
+            //pooledSneezeParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            pooledSneezeParticles.Play();
+            pooledSneezeParticles.gameObject.SetActive(false); // optional if it's already off
+        }
+        else
+        {
+            Debug.LogWarning("Sneeze particle system not found! Make sure it has the 'sneeze_particles' tag.");
         }
     }
 
@@ -127,8 +140,11 @@ public class HeadRotation : MonoBehaviour
 
         if (pooledSneezeParticles != null)
         {
+            var main = pooledSneezeParticles.main;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
             pooledSneezeParticles.transform.position = head.position;
             pooledSneezeParticles.transform.rotation = targetRotation;
+
             pooledSneezeParticles.gameObject.SetActive(true);
             pooledSneezeParticles.Play();
         }

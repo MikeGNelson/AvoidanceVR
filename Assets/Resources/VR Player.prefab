@@ -281,6 +281,8 @@ MonoBehaviour:
   positions: []
   averageDistances: []
   time: 0
+  eventTriggered: 0
+  screenBlanker: {fileID: 0}
   forwardDir: {x: 0, y: 0, z: 0}
 --- !u!114 &8923147978148046043
 MonoBehaviour:
