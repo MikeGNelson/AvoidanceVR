@@ -24,11 +24,13 @@ public class HeadRotation : MonoBehaviour
     public float particleDelay = 0.5f;
 
     private Quaternion targetRotation; // Store target rotation for the head
-    public PlayerController  playerController;
+    public PlayerController playerController;
+
+    private ParticleSystem pooledSneezeParticles;
 
     void Start()
     {
-        
+
 
         // Ensure the Animator component is automatically attached
         animator = this.GetComponent<Animator>();
@@ -37,6 +39,12 @@ public class HeadRotation : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
         playerController = GameObject.FindAnyObjectByType<PlayerController>();
         playerController.eventTriggered = false;
+
+        if (sneezeParticlesPrefab != null)
+        {
+            pooledSneezeParticles = Instantiate(sneezeParticlesPrefab);
+            pooledSneezeParticles.gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -99,21 +107,30 @@ public class HeadRotation : MonoBehaviour
     {
         // Wait for the head to finish its rotation (adjust the wait time as needed)
         yield return new WaitForSeconds(particleDelay); // You may need to tweak this wait time
+        yield return null; // Delay one more frame
 
-        // Spawn the particle system at the head's position and apply the final rotation
-        if (sneezeParticlesPrefab != null)
+        //// Spawn the particle system at the head's position and apply the final rotation
+        //if (sneezeParticlesPrefab != null)
+        //{
+        //    ParticleSystem sneezeParticles = Instantiate(sneezeParticlesPrefab, head.position, Quaternion.identity);
+
+        //    // Set the particle system to world space
+        //    var main = sneezeParticles.main;
+        //    main.simulationSpace = ParticleSystemSimulationSpace.World;
+
+        //    // Apply the rotation to the particle system after the head has rotated
+        //    sneezeParticles.transform.rotation = targetRotation;
+
+        //    // Play the sneeze particle system
+        //    sneezeParticles.Play();
+        //}
+
+        if (pooledSneezeParticles != null)
         {
-            ParticleSystem sneezeParticles = Instantiate(sneezeParticlesPrefab, head.position, Quaternion.identity);
-
-            // Set the particle system to world space
-            var main = sneezeParticles.main;
-            main.simulationSpace = ParticleSystemSimulationSpace.World;
-
-            // Apply the rotation to the particle system after the head has rotated
-            sneezeParticles.transform.rotation = targetRotation;
-
-            // Play the sneeze particle system
-            sneezeParticles.Play();
+            pooledSneezeParticles.transform.position = head.position;
+            pooledSneezeParticles.transform.rotation = targetRotation;
+            pooledSneezeParticles.gameObject.SetActive(true);
+            pooledSneezeParticles.Play();
         }
     }
 

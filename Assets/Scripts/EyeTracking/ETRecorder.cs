@@ -12,6 +12,7 @@ public class ETRecorder : MonoBehaviour
     public string outputDirectoryPath;
     public bool isBlinking;
     public float dataRate = 60.0f;
+    public int blinkCount = 0;
 
     private string fileName;
     private List<DataPoint> reportedEyeRecords;
@@ -117,7 +118,9 @@ public class ETRecorder : MonoBehaviour
 
     public void SetBlink(bool blink)
     {
+        Debug.Log("Blink");
         isBlinking = blink;
+        //if(blink ) { blinkCount++; }
     }
 
     void SetFileNameString()
@@ -173,6 +176,6 @@ public class DataPoint
 
     public string JoinValues()
     {
-        return   currentGazeObject + "," + string.Join(",", eyeData);
+        return currentGazeObject + "," + string.Join(",", eyeData);
     }
 }

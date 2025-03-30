@@ -7,6 +7,7 @@
         _TVColor ("TV Screen Color", Color) = (0.1, 0.1, 0.1, 1)
         _BezelColor ("Bezel Color", Color) = (0, 0, 0, 1)
     }
+
     SubShader
     {
         Tags { "Queue"="Geometry" "RenderType"="Opaque" }
@@ -14,55 +15,60 @@
 
         Pass
         {
-            CGPROGRAM
+            Name "Forward"
+            Tags { "LightMode" = "UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ UNITY_SINGLE_PASS_STEREO
 
-            struct appdata_t
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            struct Attributes
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct v2f
+            struct Varyings
             {
                 float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
+                float4 positionHCS : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             float2 _GridSize; // Columns and rows
             float _BezelWidth;
-            fixed4 _TVColor;
-            fixed4 _BezelColor;
+            float4 _TVColor;
+            float4 _BezelColor;
 
-            v2f vert(appdata_t v)
+            Varyings vert(Attributes IN)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                return o;
+                Varyings OUT;
+                UNITY_SETUP_INSTANCE_ID(IN);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.uv = IN.uv;
+                return OUT;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(Varyings IN) : SV_Target
             {
-                float2 uv = i.uv;
+                float2 uv = IN.uv;
 
-                // Map UV to grid
-                float2 cell = uv * _GridSize; // Scale UV to grid size
-                float2 cellIndex = floor(cell); // Get integer grid index
-                float2 cellUV = frac(cell); // Get UV within the cell
+                float2 cell = uv * _GridSize;
+                float2 cellUV = frac(cell);
 
-                // Create bezel effect
                 float bezel = step(_BezelWidth, cellUV.x) * step(cellUV.x, 1.0 - _BezelWidth) *
                               step(_BezelWidth, cellUV.y) * step(cellUV.y, 1.0 - _BezelWidth);
 
-                // Mix TV color and bezel color
-                fixed4 color = lerp(_BezelColor, _TVColor, bezel);
-
+                float4 color = lerp(_BezelColor, _TVColor, bezel);
                 return color;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

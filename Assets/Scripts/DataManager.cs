@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using Photon.Pun;
 using System;
+using UnityEngine.EventSystems;
 
 public class DataManager : MonoBehaviourPunCallbacks
 {
@@ -22,7 +23,7 @@ public class DataManager : MonoBehaviourPunCallbacks
     private string conditionPrompt = "Record this number in your post round survey:";
 
     public string conditionText = "Default";
-    
+
     public int models = 0;
 
     public int UId;
@@ -33,14 +34,14 @@ public class DataManager : MonoBehaviourPunCallbacks
 
 
 
-    
+
 
 
     public List<Record> records = new List<Record>();
     public struct Record
     {
         public float time;
-        public float distance,x,y,z;
+        public float distance, x, y, z;
         public bool isFront;
         public bool isCenter;
         public bool isSide;
@@ -63,7 +64,7 @@ public class DataManager : MonoBehaviourPunCallbacks
 
         public Record(float _time, Vector3 _position, float _x, float _y, float _z, Transform _midpoint, int _condition, Transform _c_position, float _outerDistance, DataPoint _eyeData, bool _eventTriggered)
         {
-            Debug.Log("Add Data: " +  _time);
+            Debug.Log("Add Data: " + _time);
             condition = _condition;
             time = _time;
             position = _position;
@@ -73,12 +74,12 @@ public class DataManager : MonoBehaviourPunCallbacks
             distanceToCharacter = 0f;
 
             eventTriggered = _eventTriggered;
-            
+
             x_c = _c_position.position.x;
             y_c = _c_position.position.y;
             z_c = _c_position.position.z;
             outerDistance = _outerDistance;
-            if(condition == 8 || condition ==11)
+            if (condition == 8 || condition == 11)
             {
                 outerDistance = 0.5f;
             }
@@ -101,7 +102,7 @@ public class DataManager : MonoBehaviourPunCallbacks
             //isCenter_C = false;
             //isSide_C = false;
             //isLeft_C =false;
-            distance = Vector3.Distance(_position,_midpoint.position);
+            distance = Vector3.Distance(_position, _midpoint.position);
             distanceToCharacter = Vector3.Distance(_position, _c_position.position);
 
             Debug.Log(outerDistance);
@@ -118,13 +119,13 @@ public class DataManager : MonoBehaviourPunCallbacks
             }
 
             Vector3 ITP = _midpoint.InverseTransformPoint(_position);
-            if(ITP.x < -0.001)
+            if (ITP.x < -0.001)
             {
                 isLeft = true;
                 isCenter = false;
                 Debug.Log("Left");
             }
-            else if  (ITP.x > 0.001)
+            else if (ITP.x > 0.001)
             {
                 isLeft = false;
                 isCenter = false;
@@ -137,14 +138,14 @@ public class DataManager : MonoBehaviourPunCallbacks
                 Debug.Log("Center");
             }
 
-            if(ITP.z < -0.1)
+            if (ITP.z < -0.1)
             {
-                
+
                 isFront = true;
                 isSide = false;
                 Debug.Log("Front");
             }
-            else if  (ITP.z > 0.001)
+            else if (ITP.z > 0.001)
             {
                 isFront = false;
                 isSide = false;
@@ -197,16 +198,16 @@ public class DataManager : MonoBehaviourPunCallbacks
                 Debug.Log("Side");
             }
 
-            
+
 
         }
 
     }
 
 
-    public enum Conditons 
+    public enum Conditons
     {
-        
+
         One_Default,
         Two_Toon,
         Three_Creepy,
@@ -261,15 +262,15 @@ public class DataManager : MonoBehaviourPunCallbacks
 
 
 
-   
 
 
-    public 
+
+    public
 
     // Start is called before the first frame update
     void Start()
     {
-        if(UId <0)
+        if (UId < 0)
         {
             path = "Assets/Results/test.txt";
         }
@@ -279,7 +280,7 @@ public class DataManager : MonoBehaviourPunCallbacks
             path = "Assets/Results/" + DateTime.Now.ToFileTime() + ".csv";
         }
 
-        
+
 
         //TODO
         // Send the data based on the conditon
@@ -291,8 +292,8 @@ public class DataManager : MonoBehaviourPunCallbacks
         string conditionText = conditionPrompt;
         float width = 0f;
         float speed = 0f;
-        
-        switch(conditions)
+
+        switch (conditions)
         {
 
             #region models
@@ -300,31 +301,31 @@ public class DataManager : MonoBehaviourPunCallbacks
             // Study Styles
             case Conditons.One_Default:
                 //Set model group
-                
+
                 models = 0;
                 conditionText = conditionPrompt + " 1";
                 break;
             case Conditons.Two_Toon:
                 //Set model group
-               
+
                 models = 1;//2
-                conditionText = conditionPrompt +  " 2";
+                conditionText = conditionPrompt + " 2";
                 break;
             case Conditons.Three_Creepy:
                 //Set model group
-                
+
                 models = 2;
                 conditionText = conditionPrompt + " 3";
                 break;
             case Conditons.Four_Spooky:
                 //Set model group
-               
+
                 models = 3;
                 conditionText = conditionPrompt + " 4";
                 break;
             case Conditons.Five_Robot:
                 //Set model group
-                
+
                 models = 4;
                 conditionText = conditionPrompt + " 5";
                 break;
@@ -440,9 +441,9 @@ public class DataManager : MonoBehaviourPunCallbacks
                 break;
             #endregion
 
-        /// Study Sneeze
-        /// 
-        #region proxemics
+            /// Study Sneeze
+            /// 
+            #region proxemics
 
             // Idle Modes
             case Conditons.Close_Idle:
@@ -586,7 +587,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         gameController.GetConditions(models, width, speed);
     }
 
-   
+
 
 
     /// <summary>
@@ -618,12 +619,12 @@ public class DataManager : MonoBehaviourPunCallbacks
 
         }
         Debug.Log("Write Data");
-        #if UNITY_EDITOR
-            path  = Application.dataPath  + "/" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
-            path1  = Application.dataPath + "/" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+#if UNITY_EDITOR
+        path = Application.dataPath + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+        path1 = Application.dataPath + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
 #else
-            path  = Application.persistentDataPath  + "/" +((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/"  + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
-            path1  = Application.persistentDataPath  + "/" +((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "/"  + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
+            path  = Application.persistentDataPath  + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Raw.csv";
+            path1  = Application.persistentDataPath  + "/" + conditionText + "_" + ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString() + "_Summary.csv";
 #endif
 
         float sumDistance = 0;
@@ -641,28 +642,28 @@ public class DataManager : MonoBehaviourPunCallbacks
         string passingSide = "";
         string outer = "";
 
-        
+
 
         int tIndex = 0;
         int maxTIndex = records.Count - 1;
 
         StreamWriter writer = new StreamWriter(path, true);
 
-        
 
-        int i =0;
+
+        int i = 0;
         Debug.Log("--------------------------------");
         Debug.Log("Condition: " + models);
         Debug.Log("--------------------------------");
         //writer.WriteLine("--------------------------------");
         //writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
         //writer.WriteLine("--------------------------------");
-        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Y,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,blinks");
+        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Y,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,blinks, eventTriggered");
 
 
         // Write everything from the array.
 
-       
+
         foreach (Record record in records)
         {
 
@@ -731,7 +732,7 @@ public class DataManager : MonoBehaviourPunCallbacks
             Debug.Log("--------------------------------");
             Debug.Log("Index: " + i);
             Debug.Log("--------------------------------");
-            Debug.Log("Time: " +record.time);
+            Debug.Log("Time: " + record.time);
             Debug.Log("Distance: " + record.distance);
             Debug.Log("position: " + record.position);
             Debug.Log("isCenter: " + record.isCenter);
@@ -751,25 +752,25 @@ public class DataManager : MonoBehaviourPunCallbacks
             //writer.WriteLine("isSide: " + record.isSide);
             //writer.WriteLine("isLeft: " + record.isLeft);
 
-            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11},{12}"
-                , conditionText, i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside, record.eyeData.JoinValues()));
+            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11},{12},{13}"
+                , conditionText, i, record.time, record.distance, record.x, record.y, record.z, record.isCenter, record.isFront, record.isSide, record.isLeft, record.isOutside, record.eyeData.JoinValues(), record.eventTriggered));
 
-            
-            
+
+
 
             tIndex++;
             i++;
         }
-        
+
 
         writer.Close();
 
         //Summary
         Debug.Log("write sum");
 
-        passingDistance = totalPassing / (passingDistances.Count-1);
+        passingDistance = totalPassing / (passingDistances.Count - 1);
         averageSpeed = sumDistance / totalTime;
-        if(isMinDistSide)
+        if (isMinDistSide)
         {
             isMinDistanceFrontOrBack = "";
         }
@@ -793,9 +794,28 @@ public class DataManager : MonoBehaviourPunCallbacks
 
         sw1.Close();
 
+        if (SessionManager.Instance.mode == 1)
+        {
+            // Read the files as byte arrays
+            byte[] rawData = File.ReadAllBytes(path);
+            byte[] summaryData = File.ReadAllBytes(path1);
+
+            // Send them via RPC (you might want to send them to others, not yourself)
+            photonView.RPC("ReceiveFileData", RpcTarget.Others, Path.GetFileName(path), rawData);
+            photonView.RPC("ReceiveFileData", RpcTarget.Others, Path.GetFileName(path1), summaryData);
+        }
+
 
         records.Clear();
 
+    }
+
+    [PunRPC]
+    void ReceiveFileData(string fileName, byte[] fileData)
+    {
+        string filePath = Path.Combine(Application.dataPath, fileName);
+        File.WriteAllBytes(filePath, fileData);
+        Debug.Log("Received and wrote file to: " + filePath);
     }
 
 

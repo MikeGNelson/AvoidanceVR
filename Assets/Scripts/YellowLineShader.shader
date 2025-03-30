@@ -11,6 +11,7 @@
         _LineThickness ("Line Thickness", Float) = 0.01
         _LineDensity ("Line Density (Number of Lines)", Float) = 5.0
     }
+
     SubShader
     {
         Tags { "Queue"="Transparent" "RenderType"="Transparent" }
@@ -18,40 +19,51 @@
 
         Pass
         {
+            Name "Forward"
+            Tags { "LightMode" = "UniversalForward" }
+
             Blend SrcAlpha OneMinusSrcAlpha
-            CGPROGRAM
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ UNITY_SINGLE_PASS_STEREO
 
-            struct appdata_t
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            struct Attributes
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct v2f
+            struct Varyings
             {
                 float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
+                float4 positionHCS : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             float _YellowThickness;
             float _BlackThickness;
             float _CornerLength;
-            fixed4 _YellowColor;
-            fixed4 _BlackColor;
+            float4 _YellowColor;
+            float4 _BlackColor;
 
             float _LineThickness;
-            fixed4 _LineColor;
+            float4 _LineColor;
             float _LineDensity;
 
-            v2f vert(appdata_t v)
+            Varyings vert(Attributes IN)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                return o;
+                Varyings OUT;
+                UNITY_SETUP_INSTANCE_ID(IN);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.uv = IN.uv;
+                return OUT;
             }
 
             float random(float2 st)
@@ -59,51 +71,36 @@
                 return frac(sin(dot(st.xy, float2(12.9898, 78.233))) * 43758.5453123);
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(Varyings IN) : SV_Target
             {
-                float2 uv = i.uv;
+                float2 uv = IN.uv;
 
-                // Yellow segments for all four corners
-                float isYellowHorizontal = ((uv.y <= _YellowThickness) * (uv.x <= _CornerLength)) +  // Top-left corner
-                                            ((uv.y <= _YellowThickness) * (uv.x >= 1.0 - _CornerLength)) +  // Top-right corner
-                                            ((uv.y >= 1.0 - _YellowThickness) * (uv.x <= _CornerLength)) +  // Bottom-left corner
-                                            ((uv.y >= 1.0 - _YellowThickness) * (uv.x >= 1.0 - _CornerLength)); // Bottom-right corner
+                float isYellowHorizontal = ((uv.y <= _YellowThickness) * (uv.x <= _CornerLength)) +
+                                           ((uv.y <= _YellowThickness) * (uv.x >= 1.0 - _CornerLength)) +
+                                           ((uv.y >= 1.0 - _YellowThickness) * (uv.x <= _CornerLength)) +
+                                           ((uv.y >= 1.0 - _YellowThickness) * (uv.x >= 1.0 - _CornerLength));
 
-                float isYellowVertical = ((uv.x <= _YellowThickness) * (uv.y <= _CornerLength)) +  // Top-left corner
-                                          ((uv.x >= 1.0 - _YellowThickness) * (uv.y <= _CornerLength)) +  // Top-right corner
-                                          ((uv.x <= _YellowThickness) * (uv.y >= 1.0 - _CornerLength)) +  // Bottom-left corner
-                                          ((uv.x >= 1.0 - _YellowThickness) * (uv.y >= 1.0 - _CornerLength)); // Bottom-right corner
+                float isYellowVertical = ((uv.x <= _YellowThickness) * (uv.y <= _CornerLength)) +
+                                         ((uv.x >= 1.0 - _YellowThickness) * (uv.y <= _CornerLength)) +
+                                         ((uv.x <= _YellowThickness) * (uv.y >= 1.0 - _CornerLength)) +
+                                         ((uv.x >= 1.0 - _YellowThickness) * (uv.y >= 1.0 - _CornerLength));
 
                 float isYellow = saturate(isYellowHorizontal + isYellowVertical);
 
-                // Black edge segments between yellow corners
-                float isBlackHorizontal = ((uv.y <= _BlackThickness) * (uv.x > _CornerLength) * (uv.x < 1.0 - _CornerLength)) + // Top edge
-                                           ((uv.y >= 1.0 - _BlackThickness) * (uv.x > _CornerLength) * (uv.x < 1.0 - _CornerLength)); // Bottom edge
+                float isBlackHorizontal = ((uv.y <= _BlackThickness) * (uv.x > _CornerLength) * (uv.x < 1.0 - _CornerLength)) +
+                                          ((uv.y >= 1.0 - _BlackThickness) * (uv.x > _CornerLength) * (uv.x < 1.0 - _CornerLength));
 
-                float isBlackVertical = ((uv.x <= _BlackThickness) * (uv.y > _CornerLength) * (uv.y < 1.0 - _CornerLength)) + // Left edge
-                                         ((uv.x >= 1.0 - _BlackThickness) * (uv.y > _CornerLength) * (uv.y < 1.0 - _CornerLength)); // Right edge
+                float isBlackVertical = ((uv.x <= _BlackThickness) * (uv.y > _CornerLength) * (uv.y < 1.0 - _CornerLength)) +
+                                        ((uv.x >= 1.0 - _BlackThickness) * (uv.y > _CornerLength) * (uv.y < 1.0 - _CornerLength));
 
                 float isBlack = saturate(isBlackHorizontal + isBlackVertical) * (1.0 - isYellow);
 
-                // Random lines
-                // float2 randomSeed = floor(uv * _LineDensity);
-                // float linePosition = random(randomSeed); // Random line position
-                // float isHorizontalLine = step(linePosition - _LineThickness * 0.5, uv.y) *
-                //                          step(uv.y, linePosition + _LineThickness * 0.5); // Horizontal line
-                // float isVerticalLine = step(linePosition - _LineThickness * 0.5, uv.x) *
-                //                        step(uv.x, linePosition + _LineThickness * 0.5); // Vertical line
-                // float isLine = saturate(isHorizontalLine + isVerticalLine);
+                float4 color = _YellowColor * isYellow + _BlackColor * isBlack;
+                float alpha = saturate(isYellow + isBlack);
 
-                // Combine colors
-                fixed4 color = _YellowColor * isYellow +
-                               _BlackColor * isBlack; 
-                               // +  _LineColor * isLine;
-
-                // Apply transparency for non-edge areas
-                float alpha = saturate(isYellow + isBlack);// + isLine);
-                return fixed4(color.rgb, alpha);
+                return float4(color.rgb, alpha);
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }
