@@ -31,6 +31,7 @@ public class DataManager : MonoBehaviourPunCallbacks
     string path1;
 
     public GameController gameController;
+    public ETRecorder ET;
 
 
 
@@ -658,7 +659,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         //writer.WriteLine("--------------------------------");
         //writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
         //writer.WriteLine("--------------------------------");
-        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Y,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,blinks, eventTriggered");
+        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Y,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,eye_closed,blink_count, eventTriggered");
 
 
         // Write everything from the array.
@@ -825,6 +826,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         Debug.Log(text);
         gameController.isRecording = true;
         models = mode;
+        ET.blinkCount = 0;
         //path = "Assets/Results/" + DateTime.Now.ToFileTime() + ".txt";
         conditionIndicator.text = text;
     }

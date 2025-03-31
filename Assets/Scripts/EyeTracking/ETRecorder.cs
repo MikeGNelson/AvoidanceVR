@@ -102,7 +102,8 @@ public class ETRecorder : MonoBehaviour
            playerHead.eulerAngles.x,
            playerHead.eulerAngles.y,
            playerHead.eulerAngles.z,
-           isBlinking? 1 : 0
+           isBlinking? 1 : 0,
+           blinkCount
         };
 
         return new DataPoint(DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString(), eyeTrackingWorld.GetCurrentGazeGameObject(), eyeData);
@@ -120,7 +121,7 @@ public class ETRecorder : MonoBehaviour
     {
         Debug.Log("Blink");
         isBlinking = blink;
-        //if(blink ) { blinkCount++; }
+        if(blink ) { blinkCount++; }
     }
 
     void SetFileNameString()
