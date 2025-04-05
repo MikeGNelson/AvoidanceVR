@@ -58,6 +58,12 @@ public class HeadRotation : MonoBehaviour
         {
             Debug.LogWarning("Sneeze particle system not found! Make sure it has the 'sneeze_particles' tag.");
         }
+
+        animator.Play("Sneeze", 0, 1f); // Play sneeze and skip to end
+        animator.Update(0); // Force animator to process the frame
+
+        // Reset to idle immediately
+        animator.Play("HumanoidIdle");
     }
 
     void Update()
@@ -76,18 +82,18 @@ public class HeadRotation : MonoBehaviour
                 TriggerAnimation(false); // Optionally stop the animation when out of range
             }
 
-            // Only allow the head to look at or away from the player after the animation is triggered
-            if (hasTriggeredAnimation)
-            {
-                if (isLookingAtPlayer)
-                {
-                    LookAtPlayer();
-                }
-                else
-                {
-                    LookAwayFromPlayer();
-                }
-            }
+            //// Only allow the head to look at or away from the player after the animation is triggered
+            //if (hasTriggeredAnimation)
+            //{
+            //    if (isLookingAtPlayer)
+            //    {
+            //        LookAtPlayer();
+            //    }
+            //    else
+            //    {
+            //        LookAwayFromPlayer();
+            //    }
+            //}
         }
     }
 
