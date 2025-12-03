@@ -143,6 +143,13 @@ Library: C:\Users\micha\Documents\Projects\AvoidanceVR\Temp\StagingArea\tempburs
 --compilation-defines=USING_MRC_COMPATIBLE_URP_VERSION
 --compilation-defines=OCULUS_XR_ETFR_DELAYED_PERMISSION_REQUEST
 --compilation-defines=OCULUS_XR_3_3_0_OR_NEWER
+--compilation-defines=CINEMACHINE_TIMELINE
+--compilation-defines=CINEMACHINE_PHYSICS_2D
+--compilation-defines=CINEMACHINE_PHYSICS
+--compilation-defines=CINEMACHINE_UGUI
+--compilation-defines=CINEMACHINE_LWRP_7_3_1
+--compilation-defines=CINEMACHINE_UNITY_ANIMATION
+--compilation-defines=CINEMACHINE_UNITY_IMGUI
 --compilation-defines=TIMELINE_FRAMEACCURATE
 --compilation-defines=UNITY_ANALYTICS
 --generate-link-xml=Temp\burst.link.xml

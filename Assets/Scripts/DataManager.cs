@@ -6,6 +6,7 @@ using TMPro;
 using Photon.Pun;
 using System;
 using UnityEngine.EventSystems;
+using Avoidance;
 
 public class DataManager : MonoBehaviourPunCallbacks
 {
@@ -209,48 +210,52 @@ public class DataManager : MonoBehaviourPunCallbacks
     public enum Conditons
     {
 
-        One_Default,
-        Two_Toon,
-        Three_Creepy,
-        Four_Spooky,
-        Five_Robot,
+        //One_Default,
+        //Two_Toon,
+        //Three_Creepy,
+        //Four_Spooky,
+        //Five_Robot,
 
-        Cylinder_Small_No_Follow, //5
-        Cylinder_Medium_No_Follow,
-        Cylinder_Large_No_Follow,
+        //Cylinder_Small_No_Follow, //5
+        //Cylinder_Medium_No_Follow,
+        //Cylinder_Large_No_Follow,
 
-        Cylinder_Small_Follow_Slow, //8
-        Cylinder_Medium_Follow_Slow,
-        Cylinder_Large_Follow_Slow,
+        //Cylinder_Small_Follow_Slow, //8
+        //Cylinder_Medium_Follow_Slow,
+        //Cylinder_Large_Follow_Slow,
 
-        Cylinder_Small_Follow_Medium, //11
-        Cylinder_Medium_Follow_Medium,
-        Cylinder_Large_Follow_Medium,
+        //Cylinder_Small_Follow_Medium, //11
+        //Cylinder_Medium_Follow_Medium,
+        //Cylinder_Large_Follow_Medium,
 
-        Cylinder_Small_Follow_Fast, //14
-        Cylinder_Medium_Follow_Fast,
-        Cylinder_Large_Follow_Fast,
+        //Cylinder_Small_Follow_Fast, //14
+        //Cylinder_Medium_Follow_Fast,
+        //Cylinder_Large_Follow_Fast,
 
 
-        Close_Idle, //17
-        Middle_Idle,
-        Far_Idle,
+        //Close_Idle, //17
+        //Middle_Idle,
+        //Far_Idle,
 
-        Close_Minor, //8
-        Middle_Minor,
-        Far_Minor,
+        //Close_Minor, //8
+        //Middle_Minor,
+        //Far_Minor,
 
-        Close_Moderate, //11
-        Middle_Moderate,
-        Far_Moderate,
+        //Close_Moderate, //11
+        //Middle_Moderate,
+        //Far_Moderate,
 
-        Close_Major, //14
-        Middle_Major,
-        Far_Major,
+        //Close_Major, //14
+        //Middle_Major,
+        //Far_Major,
 
-        Sneeze_None,
-        Sneeze_Away,
-        Sneeze_Towards
+        //Sneeze_None,//17
+        //Sneeze_Away,
+        //Sneeze_Towards,
+
+        Balance_None,//20
+        Balance_Hard,
+        Balance_Easy
 
 
 
@@ -297,288 +302,305 @@ public class DataManager : MonoBehaviourPunCallbacks
         switch (conditions)
         {
 
-            #region models
+            //#region models
 
-            // Study Styles
-            case Conditons.One_Default:
-                //Set model group
+            //// Study Styles
+            //case Conditons.One_Default:
+            //    //Set model group
 
-                models = 0;
-                conditionText = conditionPrompt + " 1";
+            //    models = 0;
+            //    conditionText = conditionPrompt + " 1";
+            //    break;
+            //case Conditons.Two_Toon:
+            //    //Set model group
+
+            //    models = 1;//2
+            //    conditionText = conditionPrompt + " 2";
+            //    break;
+            //case Conditons.Three_Creepy:
+            //    //Set model group
+
+            //    models = 2;
+            //    conditionText = conditionPrompt + " 3";
+            //    break;
+            //case Conditons.Four_Spooky:
+            //    //Set model group
+
+            //    models = 3;
+            //    conditionText = conditionPrompt + " 4";
+            //    break;
+            //case Conditons.Five_Robot:
+            //    //Set model group
+
+            //    models = 4;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+            //#endregion
+
+            //#region follow
+            ///// Study Cylinders
+            ////No follow
+            //case Conditons.Cylinder_Small_No_Follow:
+            //    //Set model group
+
+            //    models = 5;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Medium_No_Follow:
+            //    //Set model group
+
+            //    models = 6;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Large_No_Follow:
+            //    //Set model group
+
+            //    models = 7;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            ////Follow Slow
+            //case Conditons.Cylinder_Small_Follow_Slow:
+            //    //Set model group
+
+            //    models = 5;
+            //    speed = 0.5f;
+            //    gameController.currentCurve = gameController.smallCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Medium_Follow_Slow:
+            //    //Set model group
+
+            //    models = 6;
+            //    speed = 0.5f;
+            //    gameController.currentCurve = gameController.mediumCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Large_Follow_Slow:
+            //    //Set model group
+
+            //    models = 7;
+            //    speed = 0.5f;
+            //    gameController.currentCurve = gameController.largeCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+
+            ////Follow Medium
+            //case Conditons.Cylinder_Small_Follow_Medium:
+            //    //Set model group
+
+            //    models = 5;
+            //    speed = 1.2f;
+            //    gameController.currentCurve = gameController.smallCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Medium_Follow_Medium:
+            //    //Set model group
+
+            //    models = 6;
+            //    speed = 1.2f;
+            //    gameController.currentCurve = gameController.mediumCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Large_Follow_Medium:
+            //    //Set model group
+
+            //    models = 7;
+            //    speed = 1.2f;
+            //    gameController.currentCurve = gameController.largeCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            ////Follow Fast
+            //case Conditons.Cylinder_Small_Follow_Fast:
+            //    //Set model group
+
+            //    models = 5;
+            //    speed = 1.4f;
+            //    gameController.currentCurve = gameController.smallCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Cylinder_Medium_Follow_Fast:
+            //    //Set model group
+
+            //    models = 6;
+            //    speed = 1.4f;
+            //    conditionText = conditionPrompt + " 5";
+            //    gameController.currentCurve = gameController.mediumCurve;
+            //    break;
+
+            //case Conditons.Cylinder_Large_Follow_Fast:
+            //    //Set model group
+
+            //    models = 7;
+            //    speed = 1.4f;
+            //    gameController.currentCurve = gameController.largeCurve;
+            //    conditionText = conditionPrompt + " 5";
+            //    break;
+            //#endregion
+
+            ///// Study Sneeze
+            ///// 
+            //#region proxemics
+
+            //// Idle Modes
+            //case Conditons.Close_Idle:
+            //    //Set model group
+
+            //    models = 11;
+            //    outerDistance = .5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Middle_Idle:
+            //    //Set model group
+
+            //    models = 12;
+            //    outerDistance = 1;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Far_Idle:
+            //    //Set model group
+
+            //    models = 13;
+            //    outerDistance = 3.5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+
+            //// Minor arugement modes
+            //case Conditons.Close_Minor:
+            //    //Set model group
+
+            //    models = 8;
+            //    outerDistance = .5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Middle_Minor:
+            //    //Set model group
+
+            //    models = 9;
+            //    outerDistance = 1;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Far_Minor:
+            //    //Set model group
+
+            //    models = 10;
+            //    outerDistance = 3.5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+
+            //// Moderate arugement modes
+            //case Conditons.Close_Moderate:
+            //    //Set model group
+
+            //    models = 8;
+            //    outerDistance = .5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Middle_Moderate:
+            //    //Set model group
+
+            //    models = 9;
+            //    outerDistance = 1;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Far_Moderate:
+            //    //Set model group
+
+            //    models = 10;
+            //    outerDistance = 3.5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+
+            //// Major arugement modes
+            //case Conditons.Close_Major:
+            //    //Set model group
+
+            //    models = 8;
+            //    outerDistance = .5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Middle_Major:
+            //    //Set model group
+
+            //    models = 9;
+            //    outerDistance = 1;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Far_Major:
+            //    //Set model group
+
+            //    models = 10;
+            //    outerDistance = 3.5f;
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //#endregion
+
+            //#region sneeze
+            //case Conditons.Sneeze_None:
+            //    //Set model group
+
+            //    models = 14;
+            //    conditionText = "Sneeze_None";
+
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Sneeze_Away:
+            //    //Set model group
+            //    conditionText = "Sneeze_Away";
+            //    models = 15;
+
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //case Conditons.Sneeze_Towards:
+            //    //Set model group
+
+            //    models = 16;
+            //    conditionText = "Sneeze_Towards";
+
+            //    //conditionText = conditionPrompt + " 5";
+            //    break;
+
+            //#endregion
+
+            case Conditons.Balance_None:
+                models = 17;
+                conditionText = "Balance_None";
                 break;
-            case Conditons.Two_Toon:
-                //Set model group
 
-                models = 1;//2
-                conditionText = conditionPrompt + " 2";
-                break;
-            case Conditons.Three_Creepy:
-                //Set model group
-
-                models = 2;
-                conditionText = conditionPrompt + " 3";
-                break;
-            case Conditons.Four_Spooky:
-                //Set model group
-
-                models = 3;
-                conditionText = conditionPrompt + " 4";
-                break;
-            case Conditons.Five_Robot:
-                //Set model group
-
-                models = 4;
-                conditionText = conditionPrompt + " 5";
-                break;
-            #endregion
-
-            #region follow
-            /// Study Cylinders
-            //No follow
-            case Conditons.Cylinder_Small_No_Follow:
-                //Set model group
-
-                models = 5;
-                conditionText = conditionPrompt + " 5";
+            case Conditons.Balance_Easy:
+                models = 18;
+                conditionText = "Balance_Easy";
                 break;
 
-            case Conditons.Cylinder_Medium_No_Follow:
-                //Set model group
-
-                models = 6;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Cylinder_Large_No_Follow:
-                //Set model group
-
-                models = 7;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            //Follow Slow
-            case Conditons.Cylinder_Small_Follow_Slow:
-                //Set model group
-
-                models = 5;
-                speed = 0.5f;
-                gameController.currentCurve = gameController.smallCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Cylinder_Medium_Follow_Slow:
-                //Set model group
-
-                models = 6;
-                speed = 0.5f;
-                gameController.currentCurve = gameController.mediumCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Cylinder_Large_Follow_Slow:
-                //Set model group
-
-                models = 7;
-                speed = 0.5f;
-                gameController.currentCurve = gameController.largeCurve;
-                conditionText = conditionPrompt + " 5";
+            case Conditons.Balance_Hard:
+                models = 19;
+                conditionText = "Balance_Hard";
                 break;
 
 
-            //Follow Medium
-            case Conditons.Cylinder_Small_Follow_Medium:
-                //Set model group
-
-                models = 5;
-                speed = 1.2f;
-                gameController.currentCurve = gameController.smallCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Cylinder_Medium_Follow_Medium:
-                //Set model group
-
-                models = 6;
-                speed = 1.2f;
-                gameController.currentCurve = gameController.mediumCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Cylinder_Large_Follow_Medium:
-                //Set model group
-
-                models = 7;
-                speed = 1.2f;
-                gameController.currentCurve = gameController.largeCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            //Follow Fast
-            case Conditons.Cylinder_Small_Follow_Fast:
-                //Set model group
-
-                models = 5;
-                speed = 1.4f;
-                gameController.currentCurve = gameController.smallCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Cylinder_Medium_Follow_Fast:
-                //Set model group
-
-                models = 6;
-                speed = 1.4f;
-                conditionText = conditionPrompt + " 5";
-                gameController.currentCurve = gameController.mediumCurve;
-                break;
-
-            case Conditons.Cylinder_Large_Follow_Fast:
-                //Set model group
-
-                models = 7;
-                speed = 1.4f;
-                gameController.currentCurve = gameController.largeCurve;
-                conditionText = conditionPrompt + " 5";
-                break;
-            #endregion
-
-            /// Study Sneeze
-            /// 
-            #region proxemics
-
-            // Idle Modes
-            case Conditons.Close_Idle:
-                //Set model group
-
-                models = 11;
-                outerDistance = .5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Middle_Idle:
-                //Set model group
-
-                models = 12;
-                outerDistance = 1;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Far_Idle:
-                //Set model group
-
-                models = 13;
-                outerDistance = 3.5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-
-            // Minor arugement modes
-            case Conditons.Close_Minor:
-                //Set model group
-
-                models = 8;
-                outerDistance = .5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Middle_Minor:
-                //Set model group
-
-                models = 9;
-                outerDistance = 1;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Far_Minor:
-                //Set model group
-
-                models = 10;
-                outerDistance = 3.5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-
-            // Moderate arugement modes
-            case Conditons.Close_Moderate:
-                //Set model group
-
-                models = 8;
-                outerDistance = .5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Middle_Moderate:
-                //Set model group
-
-                models = 9;
-                outerDistance = 1;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Far_Moderate:
-                //Set model group
-
-                models = 10;
-                outerDistance = 3.5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-
-            // Major arugement modes
-            case Conditons.Close_Major:
-                //Set model group
-
-                models = 8;
-                outerDistance = .5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Middle_Major:
-                //Set model group
-
-                models = 9;
-                outerDistance = 1;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Far_Major:
-                //Set model group
-
-                models = 10;
-                outerDistance = 3.5f;
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            #endregion
-
-            #region sneeze
-            case Conditons.Sneeze_None:
-                //Set model group
-
-                models = 14;
-                conditionText = "Sneeze_None";
-
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Sneeze_Away:
-                //Set model group
-                conditionText = "Sneeze_Away";
-                models = 15;
-
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-            case Conditons.Sneeze_Towards:
-                //Set model group
-
-                models = 16;
-                conditionText = "Sneeze_Towards";
-
-                //conditionText = conditionPrompt + " 5";
-                break;
-
-                #endregion
 
         }
         int mode = models;
@@ -659,7 +681,7 @@ public class DataManager : MonoBehaviourPunCallbacks
         //writer.WriteLine("--------------------------------");
         //writer.WriteLine("Condition: " + (records[0].condition +1).ToString() + rep);
         //writer.WriteLine("--------------------------------");
-        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Y,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,eye_closed,blink_count, eventTriggered");
+        writer.WriteLine("Condition, Index, Time, Distance, X, Y, Z, isCenter, isFront, isSide, isLeft, isOuter,GazeObject,GP_X,GP_X,GP_Z,GZ_X,GZ_Y,GZ_Z,GZD_X,GZD_Y,GZD_Z,RE_X,RE_Y,RE_Z,RED_X,RED_Y,RED_Z,LE_X,LE_Y,LE_Z,LED_X,LED_Y,LED_Z,H_X,H_Y,H_Z,HR_X,HR_Y,HR_Z,eye_closed,blink_count, eventTriggered");
 
 
         // Write everything from the array.
@@ -827,8 +849,33 @@ public class DataManager : MonoBehaviourPunCallbacks
         gameController.isRecording = true;
         models = mode;
         ET.blinkCount = 0;
+
+        //if(gameController.playerController != null)
+        //{
+        //    gameController.playerController = GameObject.FindFirstObjectByType<PlayerController>();
+        //}
+
+        
+
         //path = "Assets/Results/" + DateTime.Now.ToFileTime() + ".txt";
         conditionIndicator.text = text;
+
+        switch (mode)
+        {
+            case 17:
+                GameObject.FindFirstObjectByType<BallTiltPhysics>().SetPlatform(0);
+                break;
+            case 18:
+                GameObject.FindFirstObjectByType<BallTiltPhysics>().SetPlatform(1);
+                break;
+
+            case 19:
+                GameObject.FindFirstObjectByType<BallTiltPhysics>().SetPlatform(2);
+                break;
+            default:
+                GameObject.FindFirstObjectByType<BallTiltPhysics>().SetPlatform(0);
+                break;
+        }
     }
 
 

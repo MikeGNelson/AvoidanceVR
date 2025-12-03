@@ -19,6 +19,7 @@ namespace Avoidance
         public ETRecorder ET;
 
         public GameController GC;
+        public BallTiltPhysics BP;
         //private GameManager EM;
 
         public TextMeshProUGUI message;

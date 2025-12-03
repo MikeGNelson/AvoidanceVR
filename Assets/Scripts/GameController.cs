@@ -36,7 +36,7 @@ public class GameController : MonoBehaviourPunCallbacks
     public GameObject desktopPrefab;
 
     private GameObject spawnedPlayer = null;
-    private Avoidance.PlayerController playerController;
+    public Avoidance.PlayerController playerController;
     public GameObject vrRig;
 
 

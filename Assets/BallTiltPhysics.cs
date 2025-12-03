@@ -14,10 +14,14 @@ public class BallTiltPhysics : MonoBehaviour
 
     private Rigidbody rb;
 
+    public GameObject convex;
+    public GameObject concave;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        SetPlatform(0);
     }
 
     void FixedUpdate()
@@ -61,6 +65,34 @@ public class BallTiltPhysics : MonoBehaviour
         if (distance > .5f) // Probaly should change to be below the platform
         {
             ResetBall();
+        }
+    }
+
+    public void SetPlatform(int mode)
+    {
+        Debug.Log("PLatform mode: " +mode);
+        switch (mode)
+        {
+            case 0:
+                platform = null; 
+                convex.SetActive(false);
+                concave.SetActive(false);
+                this.GetComponent<Renderer>().enabled = false;
+                break;
+            case 1:
+                
+                convex.SetActive(true);
+                concave.SetActive(false);
+                this.GetComponent<Renderer>().enabled = true;
+                platform = convex.transform;
+                break;
+            case 2:
+                
+                convex.SetActive(false);
+                concave.SetActive(true);
+                this.GetComponent<Renderer>().enabled = true;
+                platform = concave.transform;
+                break;
         }
     }
 
