@@ -577,6 +577,7 @@ MonoBehaviour:
   sneezeParticlesPrefab: {fileID: 3823941323220645123, guid: 78a492bfb25180d48a6db7aa90820d67,
     type: 3}
   particleDelay: 0.5
+  playerController: {fileID: 0}
 --- !u!114 &5404112722848428035
 MonoBehaviour:
   m_ObjectHideFlags: 0
