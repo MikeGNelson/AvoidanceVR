@@ -113,12 +113,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platform: {fileID: 0}
   gravityStrength: 9.81
-  worldWeight: 0.5
+  worldWeight: 0.982
   resetHeight: 0.2
   angularDamping: 0.98
   maxRollSpeed: 20
-  convex: {fileID: 0}
-  concave: {fileID: 0}
+  convex: {fileID: 160274449290646298}
+  concave: {fileID: 170426769348094101}
 --- !u!54 &5499982573350302234
 Rigidbody:
   m_ObjectHideFlags: 0
