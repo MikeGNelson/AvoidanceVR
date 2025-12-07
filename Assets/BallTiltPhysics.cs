@@ -21,11 +21,13 @@ public class BallTiltPhysics : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        SetPlatform(0);
+        SetPlatform(1);
     }
 
     void FixedUpdate()
     {
+        if (platform == null)
+            return;
 
         Vector3 worldDown = Physics.gravity.normalized;
         Vector3 localDown = -platform.up;
